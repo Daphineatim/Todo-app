@@ -1,14 +1,13 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+const TodoForm = ({ addTodo }) => {
 
-const TodoForm = ({addTodo}) => {
-
-    const [todo, setTodo] = useState({
-        id: "",
-        task: "",
-        completed: false
-      });
+  const [todo, setTodo] = useState({
+      id: '',
+      task: '',
+      completed: false
+    });
     
       const handleTaskInput = (e) => {
         setTodo({ ...todo, task: e.target.value });
