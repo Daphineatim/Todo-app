@@ -40,7 +40,7 @@ const TodoContainer = () => {
     setTodos((prevState) => prevState.map((todo) => {
       if (todo.id === id) {
         return {
-          ...todo, completed: !todo.completed
+          ...todo, completed: !todo.completed,
         };
       }
       return todo;
@@ -57,9 +57,9 @@ const TodoContainer = () => {
 
   const addTodoItem = (title) => {
     const newTodo = {
-      id: uuidv4(),  
-      title: title,   
-      completed: false 
+      id: uuidv4(),
+      title: title, 
+      completed: false
     };
     setTodos([...todos, newTodo]);
   };
@@ -93,10 +93,10 @@ const TodoContainer = () => {
             </div>
           </div>
         </Route>
-        <Route path='/about'>
+        <Route path="/about">
           <About />
         </Route>
-        <Route path='*'>
+        <Route path= "*">
           <NotMatch />
         </Route>
       </Switch>
