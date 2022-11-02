@@ -1,8 +1,8 @@
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 const TodoForm = ({ addTodo }) => {
-
   const [todo, setTodo] = useState({
     id: '',
     task: '',
@@ -25,11 +25,15 @@ const TodoForm = ({ addTodo }) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input onChange={handleTaskInput} value={todo.task} name="task" placeholder="Enter todo here..."/>
+        <input onChange={handleTaskInput} value={todo.task} name="task" placeholder="Enter todo here..." />
         <button type="submit">Add Todo</button>
       </form>
     </div>
   );
+};
+
+TodoForm.propTypes = {
+  addTodo: PropTypes.func.isRequired,
 };
 
 export default TodoForm;

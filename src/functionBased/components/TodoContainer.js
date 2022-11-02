@@ -10,6 +10,12 @@ import NotMatch from '../pages/NotMatch';
 import Navbar from './Navbar';
 
 const TodoContainer = () => {
+  function getInitialTodos() {
+    // getting stored items
+    const temp = localStorage.getItem('todos');
+    const savedTodos = JSON.parse(temp);
+    return savedTodos || [];
+  }
 
   const [todos, setTodos] = useState(getInitialTodos());
 
@@ -29,13 +35,6 @@ const TodoContainer = () => {
     localStorage.setItem('todos', temp);
   }, [todos]);
 
-  function getInitialTodos() {
-    // getting stored items
-    const temp = localStorage.getItem('todos');
-    const savedTodos = JSON.parse(temp);
-    return savedTodos || [];
-  }
-
   const handleChange = (id) => {
     setTodos((prevState) => prevState.map((todo) => {
       if (todo.id === id) {
@@ -49,17 +48,15 @@ const TodoContainer = () => {
 
   const delTodo = (id) => {
     setTodos([
-      ...todos.filter((todo) => {
-        return todo.id !== id;
-      }),
+      ...todos.filter((todo) => todo.id !== id),
     ]);
   };
 
   const addTodoItem = (title) => {
     const newTodo = {
       id: uuidv4(),
-      title: title, 
-      completed: false
+      title,
+      completed: false,
     };
     setTodos([...todos, newTodo]);
   };
@@ -68,7 +65,10 @@ const TodoContainer = () => {
     setTodos(
       todos.map((todo) => {
         if (todo.id === id) {
-          todo.title = updatedTitle;
+          return {
+            ...todo,
+            completed: !todo.completed,
+          };
         }
         return todo;
       }),
@@ -86,7 +86,7 @@ const TodoContainer = () => {
               <InputTodo addTodoProps={addTodoItem} />
               <TodosList
                 todos={todos}
-                handleChangeProps={handleChange} 
+                handleChangeProps={handleChange}
                 deleteTodoProps={delTodo}
                 setUpdate={setUpdate}
               />
@@ -96,7 +96,7 @@ const TodoContainer = () => {
         <Route path="/about">
           <About />
         </Route>
-        <Route path= "*">
+        <Route path="*">
           <NotMatch />
         </Route>
       </Switch>

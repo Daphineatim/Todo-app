@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import styles from './TodoItem.module.css';
@@ -5,9 +6,7 @@ import styles from './TodoItem.module.css';
 const TodoItem = (props) => {
   const [editing, setEditing] = useState(false);
 
-  useEffect(() => {
-    return () => {
-    };
+  useEffect(() => () => {
   }, []);
 
   const handleEditing = () => {
@@ -27,7 +26,8 @@ const TodoItem = (props) => {
     textDecoration: 'line-through',
   };
 
-  const { completed, id, title } = props.todo;
+  const { todo } = props;
+  const { completed, id, title } = todo;
 
   const viewMode = {};
   const editMode = {};
@@ -38,6 +38,10 @@ const TodoItem = (props) => {
     editMode.display = 'none';
   }
 
+  const { handleChangeProps } = props;
+  const { setUpdate } = props;
+  const { deleteTodoProps } = props;
+
   return (
     <li className={styles.item}>
       <div onDoubleClick={handleEditing} style={viewMode}>
@@ -45,10 +49,10 @@ const TodoItem = (props) => {
           type="checkbox"
           className={styles.checkbox}
           checked={completed}
-          onChange={() => props.handleChangeProps(id)}
+          onChange={() => handleChangeProps(id)}
         />
-        <button onClick={() => props.deleteTodoProps(id)}>
-          <FaTrash style={{color: 'orangered', fontSize: '16px'}} />
+        <button onClick={() => deleteTodoProps(id)} type="submit">
+          <FaTrash style={{ color: 'orangered', fontSize: '16px' }} />
         </button>
         <span style={completed ? completedStyle : null}>{title}</span>
       </div>
@@ -57,11 +61,18 @@ const TodoItem = (props) => {
         style={editMode}
         className={styles.textInput}
         value={title}
-        onChange={(e) => { props.setUpdate(e.target.value, id)  }}
+        onChange={(e) => { setUpdate(e.target.value, id); }}
         onKeyDown={handleUpdatedDone}
       />
     </li>
   );
+};
+
+TodoItem.propTypes = {
+  todo: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.bool])).isRequired,
+  handleChangeProps: PropTypes.func.isRequired,
+  deleteTodoProps: PropTypes.func.isRequired,
+  setUpdate: PropTypes.func.isRequired,
 };
 
 export default TodoItem;
